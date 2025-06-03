@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CryptochatApplication {
+public class CryptoChatApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CryptochatApplication.class, args);
+        SpringApplication.run(CryptoChatApplication.class, args);
     }
 
 }

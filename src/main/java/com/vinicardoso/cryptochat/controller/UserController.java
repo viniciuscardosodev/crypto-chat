@@ -1,24 +1,35 @@
 package com.vinicardoso.cryptochat.controller;
 
 import com.vinicardoso.cryptochat.entity.UserEntity;
-import com.vinicardoso.cryptochat.service.UserService;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/users")
+@CrossOrigin
 public class UserController {
 
-    private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping("/user")
+    public ResponseEntity<UserEntity> getUser(@RequestParam String username) {
+        var user = UserEntity.getUser(username);
+        if (user != null) {
+            System.out.println(user);
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserEntity> login(@RequestBody UserEntity user) {
-        var possibleUser = userService.findLogin(user.getUsername(), user.getPassword());
-        return possibleUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PostMapping("/signIn")
+    public ResponseEntity<UserEntity> postUser(@RequestBody UserEntity user) {
+        System.out.println(user);
+        if (UserEntity.alreadyRegistered(user.getUsername()))
+            return ResponseEntity.unprocessableEntity().build();
+        else {
+            user.persist();
+            return ResponseEntity.ok(user);
+        }
     }
 
 }

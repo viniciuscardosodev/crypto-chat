@@ -1,20 +1,15 @@
 package com.vinicardoso.cryptochat.entity;
 
-import jakarta.persistence.*;
+import lombok.Data;
 
-import java.util.UUID;
-
-@Entity
-@Table
+@Data
 public class MessageEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    private String content;
-    @ManyToOne(cascade = CascadeType.ALL)
+    private String id;
+    private String conversationId;
+    private int[][] content;
     private UserEntity sender;
-    @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity recipient;
+    private boolean read;
 
 }
